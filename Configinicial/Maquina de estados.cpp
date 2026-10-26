@@ -125,6 +125,8 @@ bool step = false;
 // Deltatime
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
 GLfloat lastFrame = 0.0f;  	// Time of last frame
+float animTimer = 0.0f;
+const float ANIM_RATE = 1.0f / 100.0f; // Fija el ritmo a 60 actualizaciones por segundo
 
 int main()
 {
@@ -223,7 +225,16 @@ int main()
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
 		glfwPollEvents();
 		DoMovement();
-		Animation();
+		//Animation();
+		// Acumulamos el tiempo transcurrido en cada ciclo
+		animTimer += deltaTime;
+
+		// Si ha pasado la fracción de tiempo establecida, ejecutamos la animación
+		if (animTimer >= ANIM_RATE) {
+			Animation();
+			animTimer = 0.0f; // Reiniciamos el temporizador
+		}
+
 
 		// Clear the colorbuffer
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -507,6 +518,13 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 		AnimBall = !AnimBall;
 		
 	}
+
+	// Activa el Esatdo 1
+	if (keys[GLFW_KEY_B])
+	{
+		dogAnim = 1;
+
+	}
 	
 }
 void Animation() {
@@ -522,7 +540,10 @@ void Animation() {
 		//printf("%f", rotBall);
 	}
 	
-	
+	// Animación de caminar - Estado 1
+	if (dogAnim == 1) {
+		dogPos.z += 0.01;
+	}
 }
 
 void MouseCallback(GLFWwindow *window, double xPos, double yPos)
