@@ -560,6 +560,17 @@ void Animation() {
 				step = false;
 		}
 		dogPos.z += 0.001;
+		// Condición para detenerse al llegar al borde del piso.
+		if (dogPos.z >= 2.3f) {
+			dogAnim = 0; // Transición al estado de reposo
+
+			// Reinicia los ángulos para que el modelo se detenga
+			RLegs = 0.0f;
+			FLegs = 0.0f;
+			head = 0.0f;
+			tail = 0.0f;
+			step = false;
+		}
 	}
 }
 
