@@ -1,6 +1,6 @@
-// Previo #11
+// Práctica #11
 // Serrano Cuevas Ingrid Jazmín
-// Fecha de entrega: 26 de octubre de 2026.
+// Fecha de entrega: 31 de octubre de 2026.
 // 319213197
 
 #include <iostream>
@@ -140,7 +140,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Previo 11 - Ingrid Serrano", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 11 - Ingrid Serrano", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
@@ -540,7 +540,7 @@ void Animation() {
 		//printf("%f", rotBall);
 	}
 	
-	// Animación de caminar - Estado 1
+	// Estado 1: Camina al punto A
 	if (dogAnim == 1) {
 		if (!step) {
 			RLegs += 0.3f;
@@ -562,7 +562,7 @@ void Animation() {
 		dogPos.z += 0.001;
 		// Condición para detenerse al llegar al borde del piso.
 		if (dogPos.z >= 2.3f) {
-			dogAnim = 0; // Transición al estado de reposo
+			dogAnim = 2; // Transición al estado 2 de giro
 
 			// Reinicia los ángulos para que el modelo se detenga
 			RLegs = 0.0f;
@@ -571,6 +571,39 @@ void Animation() {
 			tail = 0.0f;
 			step = false;
 		}
+	}
+
+	// Estado 2: Girar a la derecha
+	if (dogAnim == 2) {
+		dogRot -= 1.0f; // Rota el cuerpo completo hacia la derecha sobre el eje Y
+
+		// Rota la cabeza en la misma dirección, con un límite
+		if (head > -30.0f) {
+			head -= 0.5f;
+		}
+
+		// Condición para detener el giro
+		if (dogRot <= -90.0f) {
+			dogRot = -90.0f; // Ajuste exacto para evitar desfases
+			head = 0.0f;     // La cabeza regresa a su posición frontal
+			dogAnim = 3;     // Transición al estado 3 de caminar hacia el punto B
+		}
+	}
+
+	// Estado 3: Camina al punto B
+	if (dogAnim == 3) {
+		// Ciclo de animación de caminar (Estado 1)
+		if (!step) {
+			RLegs += 0.3f; FLegs += 0.3f; head += 0.3f; tail += 0.3f;
+			if (RLegs > 15.0f) step = true;
+		}
+		else {
+			RLegs -= 0.3f; FLegs -= 0.3f; head -= 0.3f; tail -= 0.3f;
+			if (RLegs < -15.0f) step = false;
+		}
+		// Ahora avanza sobre el eje X
+		dogPos.x -= 0.001f;
+
 	}
 }
 
