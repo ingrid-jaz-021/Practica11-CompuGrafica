@@ -551,7 +551,14 @@ void Animation() {
 			if (RLegs > 15.0f) // Condición
 				step = true;
 		}
-
+		else {
+			RLegs -= 0.3f;
+			FLegs -= 0.3f;
+			head -= 0.3f;
+			tail -= 0.3f;
+			if (RLegs < -15.0f) // Condición
+				step = false;
+		}
 		dogPos.z += 0.001;
 	}
 }
