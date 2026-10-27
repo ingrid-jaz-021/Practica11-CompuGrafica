@@ -575,7 +575,7 @@ void Animation() {
 
 	// Estado 2: Girar a la derecha
 	if (dogAnim == 2) {
-		dogRot -= 1.0f; // Rota el cuerpo completo hacia la derecha sobre el eje Y
+		dogRot -= 0.2f; // Rota el cuerpo completo hacia la derecha sobre el eje Y
 
 		// Rota la cabeza en la misma dirección, con un límite
 		if (head > -30.0f) {
