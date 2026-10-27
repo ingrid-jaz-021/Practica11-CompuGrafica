@@ -126,7 +126,7 @@ bool step = false;
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
 GLfloat lastFrame = 0.0f;  	// Time of last frame
 float animTimer = 0.0f;
-const float ANIM_RATE = 1.0f / 100.0f; // Fija el ritmo a 60 actualizaciones por segundo
+const float ANIM_RATE = 1.0f / 100.0f; // Fija el ritmo a 100 actualizaciones por segundo
 
 int main()
 {
@@ -542,7 +542,17 @@ void Animation() {
 	
 	// Animación de caminar - Estado 1
 	if (dogAnim == 1) {
-		dogPos.z += 0.01;
+		if (!step) {
+			RLegs += 0.3f;
+			FLegs += 0.3f;
+			head += 0.3f; 
+			tail += 0.3f;
+
+			if (RLegs > 15.0f) // Condición
+				step = true;
+		}
+
+		dogPos.z += 0.001;
 	}
 }
 
