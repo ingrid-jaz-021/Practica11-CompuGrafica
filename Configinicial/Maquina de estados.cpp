@@ -561,7 +561,7 @@ void Animation() {
 		}
 		dogPos.z += 0.001;
 		// Condición para detenerse al llegar al borde del piso.
-		if (dogPos.z >= 2.3f) {
+		if (dogPos.z >= 2.2f) {
 			dogAnim = 2; // Transición al estado 2 de giro
 
 			// Reinicia los ángulos para que el modelo se detenga
@@ -605,7 +605,7 @@ void Animation() {
 		dogPos.x -= 0.001f;
 
 		// Condición para detenerse en el Punto B e iniciar el Giro 2
-		if (dogPos.x <= -2.25f) {
+		if (dogPos.x <= -2.2f) {
 			dogAnim = 4; // Transición al estado 4 de giro
 
 			// Reinicia los ángulos para detener el paso
@@ -641,6 +641,45 @@ void Animation() {
 
 		// Avanza sobre el eje Z
 		dogPos.z -= 0.001f;
+
+		// Condición para detenerse en el Punto C e iniciar el Giro 3
+		if (dogPos.z <= -2.2f) {
+			dogAnim = 6; // Transición al estado 6 de giro
+
+			// Reinicia los ángulos para detener el paso
+			RLegs = 0.0f; FLegs = 0.0f; head = 0.0f; tail = 0.0f; step = false;
+		}
+	}
+
+	// Estado 6: Girar a la derecha en el Punto C (Hacia D)
+	if (dogAnim == 6) {
+		dogRot -= 0.2f;
+
+		if (head > -30.0f) {
+			head -= 0.5f;
+		}
+
+		// Gira otros 90 grados, es decir, hasta -270
+		if (dogRot <= -270.0f) {
+			dogRot = -270.0f;
+			head = 0.0f;
+			dogAnim = 7;  // Transición al estado 7 de caminar hacia D
+		}
+	}
+
+	// Estado 7: Camina al punto D
+	if (dogAnim == 7) {
+		if (!step) {
+			RLegs += 0.3f; FLegs += 0.3f; head += 0.3f; tail += 0.3f;
+			if (RLegs > 15.0f) step = true;
+		}
+		else {
+			RLegs -= 0.3f; FLegs -= 0.3f; head -= 0.3f; tail -= 0.3f;
+			if (RLegs < -15.0f) step = false;
+		}
+
+		// Avanza sobre el eje X positivo (hacia la derecha de la pantalla)
+		dogPos.x += 0.001f;
 
 	}
 }
