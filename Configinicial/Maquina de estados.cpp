@@ -604,6 +604,44 @@ void Animation() {
 		// Ahora avanza sobre el eje X
 		dogPos.x -= 0.001f;
 
+		// Condición para detenerse en el Punto B e iniciar el Giro 2
+		if (dogPos.x <= -2.25f) {
+			dogAnim = 4; // Transición al estado 4 de giro
+
+			// Reinicia los ángulos para detener el paso
+			RLegs = 0.0f; FLegs = 0.0f; head = 0.0f; tail = 0.0f; step = false;
+		}
+	}
+
+	// Estado 4: Girar a la derecha en el Punto B (Hacia C)
+	if (dogAnim == 4) {
+		dogRot -= 0.2f;
+
+		if (head > -30.0f) {
+			head -= 0.5f;
+		}
+
+		if (dogRot <= -180.0f) {
+			dogRot = -180.0f;
+			head = 0.0f;
+			dogAnim = 5; // Transición al estado 5 de caminar hacia C
+		}
+	}
+
+	// Estado 5: Camina al punto C
+	if (dogAnim == 5) {
+		if (!step) {
+			RLegs += 0.3f; FLegs += 0.3f; head += 0.3f; tail += 0.3f;
+			if (RLegs > 15.0f) step = true;
+		}
+		else {
+			RLegs -= 0.3f; FLegs -= 0.3f; head -= 0.3f; tail -= 0.3f;
+			if (RLegs < -15.0f) step = false;
+		}
+
+		// Avanza sobre el eje Z
+		dogPos.z -= 0.001f;
+
 	}
 }
 
