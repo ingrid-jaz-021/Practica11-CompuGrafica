@@ -681,6 +681,66 @@ void Animation() {
 		// Avanza sobre el eje X positivo (hacia la derecha de la pantalla)
 		dogPos.x += 0.001f;
 
+		// Condición para detenerse en el Punto D
+		if (dogPos.x >= 2.2f) {
+			dogAnim = 8; // Transición al estado 8 de giro
+			RLegs = 0.0f; FLegs = 0.0f; head = 0.0f; tail = 0.0f; step = false;
+		}
+	}
+	// Estado 8: Girar en el Punto D hacia E (125 grados a la derecha)
+	if (dogAnim == 8) {
+		dogRot -= 0.2f; // Sigue rotando hacia la derecha
+
+		// La cabeza acompaña el giro suavemente
+		if (head > -30.0f) {
+			head -= 0.5f;
+		}
+
+		// Como estaba en -270 grados, le restamos 125 grados: -395.0f
+		if (dogRot <= -395.0f) {
+			dogRot = -395.0f; // Ajusta el ángulo con precisión
+			head = 0.0f;      // Posiciona la cabeza al frente para el siguiente estado
+			dogAnim = 9;      // Transición al estado 9 de caminar hacia E
+		}
+	}
+
+	// Estado 9: Camina diagonalmente de regreso al punto A
+	if (dogAnim == 9) {
+		if (!step) {
+			RLegs += 0.3f; FLegs += 0.3f; head += 0.3f; tail += 0.3f;
+			if (RLegs > 15.0f) step = true;
+		}
+		else {
+			RLegs -= 0.3f; FLegs -= 0.3f; head -= 0.3f; tail -= 0.3f;
+			if (RLegs < -15.0f) step = false;
+		}
+
+		// Modificamos X y Z simultáneamente para trazar la diagonal hacia A
+		dogPos.x -= 0.001f; // Avanza hacia la izquierda
+		dogPos.z += 0.001f;  // Avanza hacia el frente de la cámara
+
+		// Condición para detenerse al llegar al origen (Punto A)
+		if (dogPos.x <= 0.0f) {
+			dogAnim = 10; // Transición al estado 10 para el giro final
+			RLegs = 0.0f; FLegs = 0.0f; head = 0.0f; tail = 0.0f; step = false;
+		}
+	}
+
+	// Estado 10: Giro final para regresar a la orientación inicial
+	if (dogAnim == 10) {
+		// Sumamos en lugar de restar para que el giro sea hacia la izquierda
+		dogRot += 0.2f;
+
+		// La cabeza acompaña el giro
+		if (head < 30.0f) {
+			head += 0.5f;
+		}
+
+		if (dogRot >= -360.0f) {
+			dogRot = 0.0f;   // -360 equivale a 0, devolviendo al modelo a su estado exacto inicial
+			head = 0.0f;     // Centramos la cabeza
+			dogAnim = 0;     // Regresamos al Estado 0 (Reposo).
+		}
 	}
 }
 
